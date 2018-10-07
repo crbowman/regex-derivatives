@@ -2,7 +2,7 @@
 ;; Author: Curtis Bowman
 ;;
 ;;
-
+(ns: regex.derivatives)
 
 
 ;; Predicates
@@ -98,4 +98,4 @@
 
 (nullable? a)
 (nil? (nullable? a))
-(regex-derivative a \a)lo
+(regex-derivative a \a)
