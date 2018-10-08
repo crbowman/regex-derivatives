@@ -1,7 +1,35 @@
 ;;
 ;; Author: Curtis Bowman
+;; Site: https://partiallyapplied.io/
 ;;
-;;
+
+; The code in this file implements a
+; regular-expression matcher based on the derivative of
+; regular expressions.
+
+; The derivative of a regular expression 're' with respect
+; to a character 'c' is a new regular expression which matches
+; what the expression 're' would match if it first matched 'c'.
+
+; For example, using POSIX notation, the derivative of
+; (foo|frak)* with respect to 'f' is (oo|rak)(foo|frak)*
+
+; To account for the possibility that a regular expression
+; may not match any string, including the empty string,
+; regular expressions include an unmatchable pattern:
+
+; <regex> ::= null-set               ; Unmatchable pattern
+;          |  null-string            ; Empty/blank pattern
+;          |  <symbol>              ; Symbol
+;          |  <char>               ; Character
+;          |  (alt <regex> <regex>)  ; Alternation
+;          |  (seq <regex> <regex>)  ; Sequence
+;          |  (rep <regex>)          ; Repetition
+
+; Further reading:
+
+; [1] Janusz Brzozowski. "Derivatives of Regular Expressions." 1964.
+; [2] Scott Owens, John Reppy, Aaron Turon. "Regular expression derivatives re-examined." 2009.
 (ns: regex.derivatives)
 
 
@@ -25,7 +53,6 @@
   (or (char? re) (symbol? re)))
 
 ;; Constructors
-
 (defn null-string []
   {:op :null-string})
 
@@ -70,7 +97,7 @@
 
 
 ;; regex-derivative: regex * regex-atom -> regex
-;;  - Returns the derivative of re with repect to c.
+;;  - Returns the derivative of re with respect to c.
 (defn regex-derivative [re c]
   (cond (null-string? c)    re
         (null-string? re)   null-string
@@ -93,9 +120,9 @@
 
 ;; Tests
 
-(def a (alt (cat \a \b) (cat \a \c)))
-(def b \a)
+(def re (alt (cat \a \b) (cat \a \c)))
+(def str \a)
 
-(nullable? a)
-(nil? (nullable? a))
-(regex-derivative a \a)
+(nullable? str)
+(nil? (nullable? str))
+(regex-derivative re str)
