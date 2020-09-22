@@ -29,7 +29,7 @@
 
 ; [1] Janusz Brzozowski. "Derivatives of Regular Expressions." 1964.
 ; [2] Scott Owens, John Reppy, Aaron Turon. "Regular expression derivatives re-examined." 2009.
-(ns: regex.derivatives)
+(ns regex.derivatives)
 
 (def null-string 
   {:op :null-string})
